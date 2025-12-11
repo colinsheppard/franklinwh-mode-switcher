@@ -5,7 +5,7 @@ This project deploys a Google Cloud Function that automatically switches your Fr
 ## Prerequisites
 
 1.  **Google Cloud Platform (GCP) Account**: You need a GCP project with billing enabled.
-2.  **FranklinWH Credentials**: Your username, password, and Gateway ID.
+2.  **FranklinWH Credentials**: Your username, password, and Gateway ID. Your Gateway ID can be found in the FranklinWH app under Settings > Device Info > SN (Serial Number is the Gateway ID).
 3.  **Python 3.10+**: For local testing (optional).
 
 ## Step 1: Install Google Cloud SDK
