@@ -7,17 +7,23 @@ import config
 
 class TestModeSwitcher(unittest.TestCase):
 
+    @patch('main.Mode')
     @patch('main.get_secret')
     @patch('main.TokenFetcher')
     @patch('main.Client')
-    def test_mode_switch_trigger(self, mock_client_cls, mock_fetcher_cls, mock_get_secret):
+    def test_mode_switch_trigger(self, mock_client_cls, mock_fetcher_cls, mock_get_secret, mock_mode_cls):
+
         # Mock secrets
         mock_get_secret.side_effect = lambda x, y=None: "dummy_value"
         
         # Mock Client instance
         mock_client = MagicMock()
         mock_client_cls.return_value = mock_client
-        mock_client.get_mode.return_value = "time_of_use" # Currently in TOU
+        mock_client.get_mode.return_value = ("time_of_use", 20) # Currently in TOU
+
+        # Mock Mode factory
+        mock_mode_instance = MagicMock()
+        mock_mode_cls.emergency_backup.return_value = mock_mode_instance
 
         # Mock time to 00:05 (should trigger emergency_backup)
         tz = pytz.timezone(config.TIMEZONE)
@@ -34,19 +40,21 @@ class TestModeSwitcher(unittest.TestCase):
             
             # Verify
             self.assertEqual(response, ("Switched to emergency_backup", 200))
-            mock_client.set_mode.assert_called_with("emergency_backup")
+            self.assertEqual(response, ("Switched to emergency_backup", 200))
+            mock_client.set_mode.assert_called_with(mock_mode_instance)
 
+    @patch('main.Mode')
     @patch('main.get_secret')
     @patch('main.TokenFetcher')
     @patch('main.Client')
-    def test_no_action_needed(self, mock_client_cls, mock_fetcher_cls, mock_get_secret):
+    def test_no_action_needed(self, mock_client_cls, mock_fetcher_cls, mock_get_secret, mock_mode_cls):
         # Mock secrets
         mock_get_secret.side_effect = lambda x, y=None: "dummy_value"
         
         # Mock Client instance
         mock_client = MagicMock()
         mock_client_cls.return_value = mock_client
-        mock_client.get_mode.return_value = "emergency_backup" # Already in backup
+        mock_client.get_mode.return_value = ("emergency_backup", 100) # Already in backup
 
         # Mock time to 00:05
         tz = pytz.timezone(config.TIMEZONE)
@@ -64,10 +72,11 @@ class TestModeSwitcher(unittest.TestCase):
             self.assertEqual(response, ("Already in emergency_backup", 200))
             mock_client.set_mode.assert_not_called()
 
+    @patch('main.Mode')
     @patch('main.get_secret')
     @patch('main.TokenFetcher')
     @patch('main.Client')
-    def test_no_schedule_match(self, mock_client_cls, mock_fetcher_cls, mock_get_secret):
+    def test_no_schedule_match(self, mock_client_cls, mock_fetcher_cls, mock_get_secret, mock_mode_cls):
         # Mock secrets
         mock_get_secret.side_effect = lambda x, y=None: "dummy_value"
         

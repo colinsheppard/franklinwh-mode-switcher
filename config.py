@@ -7,6 +7,9 @@
 
 SCHEDULE = [
     {"time": "00:05", "mode": "emergency_backup"},
+    {"time": "21:25", "mode": "emergency_backup"},
+    {"time": "21:46", "mode": "emergency_backup"},
+    {"time": "21:48", "mode": "time_of_use"},
     {"time": "04:00", "mode": "time_of_use"},
 ]
 

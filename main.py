@@ -4,7 +4,7 @@ import pytz
 import logging
 from google.cloud import secretmanager
 import functions_framework
-from franklinwh import Client
+from franklinwh import Client, Mode
 from franklinwh.client import TokenFetcher
 
 import config
@@ -93,13 +93,35 @@ def mode_switcher(request):
     if target_mode:
         logger.info(f"Time match found! Switching to mode: {target_mode}")
         try:
-            # Check current mode first to avoid unnecessary calls?
-            # The library has get_mode()
-            current_mode = client.get_mode()
-            logger.info(f"Current mode is: {current_mode}")
+            # Map string to Mode factory
+            mode_factories = {
+                "time_of_use": Mode.time_of_use,
+                "emergency_backup": Mode.emergency_backup,
+                "self_consumption": Mode.self_consumption,
+            }
             
-            if current_mode != target_mode:
-                client.set_mode(target_mode)
+            if target_mode not in mode_factories:
+                logger.error(f"Unknown target mode in config: {target_mode}")
+                return f"Configuration error: unknown mode {target_mode}", 500
+
+            # Create the Mode object
+            # Use default SOCs for now, or we could add SOC to config later
+            target_mode_obj = mode_factories[target_mode]()
+
+            # Check current mode
+            try:
+                # get_mode returns (mode_name, soc)
+                current_mode_tuple = client.get_mode()
+                current_mode_name = current_mode_tuple[0]
+                logger.info(f"Current mode is: {current_mode_name} (full info: {current_mode_tuple})")
+            except (KeyError, RuntimeError) as e:
+                # If we hit the 18513 error or similar, client.get_mode will likely raise KeyError or RuntimeError
+                # In this case, we don't know the current mode, so we should attempt to switch anyway to be safe.
+                logger.warning(f"Failed to determine current mode (likely unknown mode ID): {e}. Proceeding to switch.")
+                current_mode_name = None
+
+            if current_mode_name != target_mode:
+                client.set_mode(target_mode_obj)
                 logger.info(f"Successfully switched to {target_mode}")
                 return f"Switched to {target_mode}", 200
             else:
