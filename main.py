@@ -5,6 +5,13 @@ import logging
 from google.cloud import secretmanager
 import functions_framework
 from franklinwh import Client, Mode
+import franklinwh.client
+
+# Monkeypatch the FranklinWH library to handle unknown mode IDs safely.
+# 18513 and 18515 have been observed in the wild.
+# We map them to user-identified mode names so we don't switch efficiently.
+franklinwh.client.MODE_MAP[18513] = "time_of_use"
+franklinwh.client.MODE_MAP[18515] = "emergency_backup"
 from franklinwh.client import TokenFetcher
 
 import config

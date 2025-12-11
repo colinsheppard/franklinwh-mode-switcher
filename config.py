@@ -6,7 +6,7 @@
 # Times are in 24-hour format.
 
 SCHEDULE = [
-    {"time": "00:05", "mode": "emergency_backup"},
+    {"time": "00:30", "mode": "emergency_backup"},
     {"time": "04:00", "mode": "time_of_use"},
 ]
 
