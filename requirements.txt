@@ -1,0 +1,4 @@
+franklinwh
+google-cloud-secret-manager
+functions-framework
+pytz
