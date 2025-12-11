@@ -2,6 +2,12 @@
 
 This project deploys a Google Cloud Function that automatically switches your FranklinWH battery mode based on a time schedule.
 
+This is an unofficial tool that uses the [franklinwh python package](https://github.com/richo/franklinwh-python) (also an unofficial tool) and interacts with FranklinWH cloud APIs. This is not endorsed, supported, or reviewed by FranklinWH or any related entity.
+
+**Please read the disclaimer at the bottom of this document before using this tool.**
+
+# Getting Started
+
 ## Prerequisites
 
 1.  **Google Cloud Platform (GCP) Account**: You need a GCP project with billing enabled.
@@ -108,7 +114,7 @@ Check the logs to ensure it's running correctly:
 gcloud functions logs read franklinwh-mode-switcher --gen2 --region=us-central1 --limit=20
 ```
 
-## Disclaimer
+# Disclaimer
 
 This software is provided “as is”, without warranty of any kind, express or implied.
 It is an unofficial tool that interacts with FranklinWH cloud APIs and is not endorsed, supported, or reviewed by FranklinWH or any related entity.
