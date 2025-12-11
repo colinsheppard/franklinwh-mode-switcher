@@ -107,3 +107,18 @@ Check the logs to ensure it's running correctly:
 ```bash
 gcloud functions logs read franklinwh-mode-switcher --gen2 --region=us-central1 --limit=20
 ```
+
+## Disclaimer
+
+This software is provided “as is”, without warranty of any kind, express or implied.
+It is an unofficial tool that interacts with FranklinWH cloud APIs and is not endorsed, supported, or reviewed by FranklinWH or any related entity.
+
+By using this software, you acknowledge and agree that:
+
+* You assume all risks associated with running it, including but not limited to misconfiguration, loss of stored energy during an actual outage, unexpected system behavior, battery wear, or any operational or financial consequences.
+* The author(s) make no guarantees about correctness, reliability, functionality, or fitness for any particular purpose.
+* The author(s) are not responsible for any damages, losses, failures, malfunctions, missed backups, incorrect operating modes, or adverse outcomes that may arise from use of this software.
+* You are solely responsible for ensuring that your energy system is configured and operated in a manner consistent with local regulations, utility requirements, warranty terms, and safe electrical practice.
+* By running this software, you agree to release, indemnify, and hold harmless the author(s) from any and all claims, liabilities, damages, or losses of any kind arising directly or indirectly from its use.
+
+If you do not agree to these terms, **do not use this software**.
