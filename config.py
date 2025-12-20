@@ -2,12 +2,12 @@
 
 # Schedule for mode switching
 # Format: {"time": "HH:MM", "mode": "MODE_NAME"}
-# Modes: "backup" (Emergency Backup), "tou" (Time of Use), "self_use" (Self Use)
+# Modes: "emergency_backup" (Emergency Backup), "time_of_use" (Time of Use), "self_consumption" (Self Use)
 # Times are in 24-hour format.
 
 SCHEDULE = [
-    {"time": "00:30", "mode": "emergency_backup"},
-    {"time": "04:00", "mode": "time_of_use"},
+    {"time": "00:00", "mode": "emergency_backup"},
+    {"time": "15:00", "mode": "time_of_use"},
 ]
 
 # Timezone for the schedule
